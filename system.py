@@ -1,4 +1,12 @@
+import pandas as pd
+import sys
+import datetime
+
 # 商品クラス
+now = datetime.datetime.now().strftime('%Y%m%d_%H%M%S')
+receipt_path = './receipt/receipt_' + now + '.txt'
+
+
 class Item:
     def __init__(self, item_code, item_name, price):
         self.item_code = item_code
@@ -25,7 +33,6 @@ class Order:
             print("商品コード:{}".format(item))
 
     # オーダー番号から商品情報を取得する（課題１）
-
     def view_items(self):
         print("商品一覧")
         print('--------------------')
@@ -33,6 +40,25 @@ class Order:
             print(str(item.item_code) + ',' +
                   str(item.item_name) + ',' + str(item.price))
         print('--------------------')
+
+    def input_order(self):
+        check = 'n'
+        self.all_order_price = 0
+        while check == 'n':
+            order_code = int(input('オーダーする商品コードを入力してください：'))
+            selected_menu = self.item_master[order_code-1]
+            your_order = str(selected_menu.item_code) + \
+                ',' + str(selected_menu.item_name)
+            print('選択されたメニュー:')
+            print(your_order)
+            while check == 'y' or 'n':
+                check = input('オーダーを終了しますかy/n：')
+                if check == 'y':
+                    break
+                elif check == 'n':
+                    break
+                else:
+                    print('無効な入力です。再度入力してください')
 
 
 def main():
@@ -48,8 +74,9 @@ def main():
     order.add_item_order("002")
     order.add_item_order("003")
 
-    # オーダー表示
-    order.view_items()
+    # 課題2
+    # order.view_items()
+    order.input_order()
 
 
 if __name__ == "__main__":
