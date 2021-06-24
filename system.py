@@ -5,6 +5,7 @@ import datetime
 # 商品クラス
 now = datetime.datetime.now().strftime('%Y%m%d_%H%M%S')
 receipt_path = './receipt/receipt_' + now + '.txt'
+ITEM_MASTER_CSV_PATH = "./item_master.csv"
 
 
 class Item:
@@ -60,19 +61,45 @@ class Order:
                 else:
                     print('無効な入力です。再度入力してください')
 
+# マスタ登録(課題３)
+
+
+def add_item_master_by_csv(csv_path):
+    print("------- マスタ登録開始 ---------")
+    item_master = []
+    count = 0
+    try:
+        # CSVでは先頭の0が削除されるためこれを保持するための設定
+        item_master_df = pd.read_csv(csv_path, dtype={"item_code": object})
+        for item_code, item_name, price in zip(list(item_master_df["item_code"]), list(item_master_df["item_name"]), list(item_master_df["price"])):
+            item_master.append(Item(item_code, item_name, price))
+            print("{}({})".format(item_name, item_code))
+            count += 1
+        print("{}品の登録を完了しました。".format(count))
+        print("------- マスタ登録完了 ---------")
+        return item_master
+    except:
+        print("マスタ登録が失敗しました")
+        print("------- マスタ登録完了 ---------")
+        sys.exit()
+
 
 def main():
-    # マスタ登録
-    item_master = []
-    item_master.append(Item("001", "りんご", 100))
-    item_master.append(Item("002", "なし", 120))
-    item_master.append(Item("003", "みかん", 150))
+    # マスタ登録(課題３)
+    item_master = add_item_master_by_csv(ITEM_MASTER_CSV_PATH)  # CSVからマスタへ登録
+    order = Order(item_master)  # マスタをオーダーに登録
 
-    # オーダー登録
-    order = Order(item_master)
-    order.add_item_order("001")
-    order.add_item_order("002")
-    order.add_item_order("003")
+    # マスタ登録
+    # item_master = []
+    # item_master.append(Item("001", "りんご", 100))
+    # item_master.append(Item("002", "なし", 120))
+    # item_master.append(Item("003", "みかん", 150))
+
+    # # オーダー登録
+    # order = Order(item_master)
+    # order.add_item_order("001")
+    # order.add_item_order("002")
+    # order.add_item_order("003")
 
     # 課題2
     # order.view_items()
