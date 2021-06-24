@@ -8,6 +8,7 @@ class Item:
     def get_price(self):
         return self.price
 
+
 # オーダークラス
 
 
@@ -24,11 +25,14 @@ class Order:
             print("商品コード:{}".format(item))
 
     # オーダー番号から商品情報を取得する（課題１）
-    def get_item_data(self, item_code):
-        for n in self.item_master:
-            if item_code == n.item_code:
-                return n.item_name, n.price
-# メイン処理
+
+    def view_items(self):
+        print("商品一覧")
+        print('--------------------')
+        for item in self.item_master:
+            print(str(item.item_code) + ',' +
+                  str(item.item_name) + ',' + str(item.price))
+        print('--------------------')
 
 
 def main():
@@ -45,7 +49,7 @@ def main():
     order.add_item_order("003")
 
     # オーダー表示
-    order.view_item_list()
+    order.view_items()
 
 
 if __name__ == "__main__":
